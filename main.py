@@ -16,4 +16,5 @@ CAR_0 = pygame.image.load(os.path.join('assets', 'car0.png'))
 CAR_1 = pygame.image.load(os.path.join('assets', 'car1.png'))
 FONT = pygame.font.Font('Arial', FONT_SIZE)
 
+pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Racing Simulator')
