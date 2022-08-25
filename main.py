@@ -14,19 +14,24 @@ class Sizes:
 
 s = Sizes(20, 840, 650)
 
-
 #Images and font
 BG = pygame.image.load(os.path.join('assets', 'background-1.png'))
 CAR_0 = pygame.image.load(os.path.join('assets', 'car0.png'))
 CAR_1 = pygame.image.load(os.path.join('assets', 'car1.png'))
-FONT = pygame.font.Font('Arial', s.font_size)
+FONT = pygame.font.SysFont('Arial', s.font_size)
 
 #Set display
-pygame.display.set_mode((s.width, s.height))
+WIN = pygame.display.set_mode((s.width, s.height))
 pygame.display.set_caption('Racing Simulator')
 
 #Game loop
-# running = True
+def main():
+    running = True
 
-# while running:
-#     for event
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+if __name__ == "__main__":
+    main()
