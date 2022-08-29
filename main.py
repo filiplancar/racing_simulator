@@ -19,15 +19,14 @@ class Sizes:
 s = Sizes(20, 840, 650)
 
 #Images and font
-CAR_0 = pygame.image.load(os.path.join('assets', 'car0.png'))
 CAR_1 = pygame.image.load(os.path.join('assets', 'car1.png'))
 FONT = pygame.font.SysFont('Arial', s.font_size)
 
 #Get background
 class Background(pygame.sprite.Sprite):
-    def __init__(self, path, image_file, location):
+    def __init__(self, path, img, location):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load(os.path.join(path, image_file))
+        self.image = pygame.image.load(os.path.join(path, img))
         self.rect = self.image.get_rect()
         self.rect.left, self.rect.top = location
 
@@ -36,6 +35,17 @@ bg = Background('assets', 'background-1.png', (0,0))
 #Set display
 screen = pygame.display.set_mode((s.width, s.height))
 pygame.display.set_caption('Racing Simulator')
+
+#Get car for player 
+class PlayerCar(pygame.sprite.Sprite):
+    def __init__(self, path, img, location):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load(os.path.join(path, img))
+        self.rect = self.image.get_rect()
+        self.rect.left, self.rect.top = location
+
+player_car = PlayerCar('assets', 'car0.png', (360,410))
+player_car.image = pygame.transform.scale(player_car.image, (120, 240))
 
 #Game loop
 def main():
@@ -48,7 +58,8 @@ def main():
             
         screen.fill(WHITE)    
         screen.blit(bg.image, bg.rect)
-        pygame.display.flip()
+        screen.blit(player_car.image, player_car.rect)
+        pygame.display.update()
 
 if __name__ == "__main__":
     main()
