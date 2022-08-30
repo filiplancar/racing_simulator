@@ -43,22 +43,21 @@ class PlayerCar(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.left, self.rect.top = location
 
-# player_car = PlayerCar('assets', 'car0.png', (360,410))
-
 #Game loop
 def main():
     
-    x = 360
-    y = 410
-    # player_car = PlayerCar('assets', 'car0.png', (x, y))
-    
+    pos_x = 360
+    pos_y = 410
+    second_pos_y = pos_y - 50
+
     vel = 5
+    fps = 60
 
     clock = pygame.time.Clock()
     running = True
     
     while running:
-        clock.tick(60)
+        clock.tick(fps)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -67,12 +66,15 @@ def main():
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_LEFT]:
-            x -= vel
+            pos_x -= vel
         
         if keys[pygame.K_RIGHT]:
-            x += vel
-
-        player_car = PlayerCar('assets', 'car0.png', (x, y))
+            pos_x += vel
+        
+        if pos_y != second_pos_y:
+            pos_y -= vel
+        
+        player_car = PlayerCar('assets', 'car0.png', (pos_x, pos_y))
         player_car.image = pygame.transform.scale(player_car.image, (120, 240))
 
         screen.fill(WHITE)    
