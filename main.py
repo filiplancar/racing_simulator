@@ -1,7 +1,6 @@
 #Import modules
 import pygame
 import os
-from pygame.locals import *
 
 #Initialize pygame
 pygame.init()
@@ -44,22 +43,45 @@ class PlayerCar(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.left, self.rect.top = location
 
-player_car = PlayerCar('assets', 'car0.png', (360,410))
-player_car.image = pygame.transform.scale(player_car.image, (120, 240))
+# player_car = PlayerCar('assets', 'car0.png', (360,410))
 
 #Game loop
 def main():
-    running = True
+    
+    x = 360
+    y = 410
+    # player_car = PlayerCar('assets', 'car0.png', (x, y))
+    
+    vel = 5
 
+    clock = pygame.time.Clock()
+    running = True
+    
     while running:
+        clock.tick(60)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            
+        
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_LEFT]:
+            x -= vel
+        
+        if keys[pygame.K_RIGHT]:
+            x += vel
+
+        player_car = PlayerCar('assets', 'car0.png', (x, y))
+        player_car.image = pygame.transform.scale(player_car.image, (120, 240))
+
         screen.fill(WHITE)    
         screen.blit(bg.image, bg.rect)
         screen.blit(player_car.image, player_car.rect)
+
         pygame.display.update()
 
 if __name__ == "__main__":
     main()
+
+#Snažím sa dať auto do pohybu
