@@ -1,8 +1,6 @@
-#Import modules
+#Import modules and initialize pygame
 import pygame
 import os
-
-#Initialize pygame
 pygame.init()
 
 #Colors
@@ -36,7 +34,7 @@ screen = pygame.display.set_mode((s.width, s.height))
 pygame.display.set_caption('Racing Simulator')
 
 #Get car for player 
-class PlayerCar(pygame.sprite.Sprite):
+class Car(pygame.sprite.Sprite):
     def __init__(self, path, img, location):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(os.path.join(path, img))
@@ -50,6 +48,9 @@ def main():
     pos_y = 410
     second_pos_y = pos_y - 50
 
+    left_border = 140
+    right_border = 585
+    
     vel = 5
     fps = 60
 
@@ -65,17 +66,20 @@ def main():
         
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_LEFT]:
+        if keys[pygame.K_LEFT] and pos_x != left_border:
             pos_x -= vel
         
-        if keys[pygame.K_RIGHT]:
+        if keys[pygame.K_RIGHT] and pos_x != right_border:
             pos_x += vel
         
         if pos_y != second_pos_y:
             pos_y -= vel
         
-        player_car = PlayerCar('assets', 'car0.png', (pos_x, pos_y))
+        player_car = Car('assets', 'car0.png', (pos_x, pos_y))
         player_car.image = pygame.transform.scale(player_car.image, (120, 240))
+
+        cars = Car('assets', 'car1.png', (0, 0))
+        cars.image = pygame.transform.scale(cars.image, (120, 240))
 
         screen.fill(WHITE)    
         screen.blit(bg.image, bg.rect)
