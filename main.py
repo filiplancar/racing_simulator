@@ -1,4 +1,5 @@
 #Import modules and initialize pygame
+# from tkinter import font
 import pygame
 import os
 import random
@@ -6,6 +7,7 @@ pygame.init()
 
 #Colors
 WHITE = (255,255,255)
+BLACK = (0,0,0)
 
 #Sizes
 class Sizes:
@@ -17,7 +19,7 @@ class Sizes:
 s = Sizes(20, 840, 650)
 
 #Images and font
-FONT = pygame.font.SysFont('Arial', s.font_size)
+myfont = pygame.font.SysFont('Arial', s.font_size)
 
 #Get background
 class Background(pygame.sprite.Sprite):
@@ -60,9 +62,13 @@ def main():
     vel = 5
     fps = 60
 
+    #score
+    score = 0
+
     #Clock and running 
     clock = pygame.time.Clock()
     running = True
+
 
     while running:
         #Connect clock with fps
@@ -77,15 +83,20 @@ def main():
         if obstacle_y >= s.height:
             obstacle_x = random.randint(left_border, right_border)
             obstacle_y = -250
-            vel+=1
+            
+            #Change velocity
+            vel+=0.5
+
+            #Change score
+            score+=1
 
         keys = pygame.key.get_pressed()
 
         #Moving with player car
-        if keys[pygame.K_LEFT] and player_x != left_border:
+        if keys[pygame.K_LEFT] and player_x > left_border:
             player_x -= vel
         
-        if keys[pygame.K_RIGHT] and player_x != right_border:
+        if keys[pygame.K_RIGHT] and player_x < right_border:
             player_x += vel
         
         if player_y != second_pos_y:
@@ -108,9 +119,13 @@ def main():
 
         screen.blit(obstacle_car.image, obstacle_car.rect)
 
+        scoretext = myfont.render("Score = "+str(score), 1, (BLACK))
+        screen.blit(scoretext, (5,10))
+
+        velocitytext = myfont.render("Velocity = "+str(vel), 1, (BLACK))
+        screen.blit(velocitytext, (5,35))
+
         pygame.display.update()
 
 if __name__ == "__main__":
     main()
-
-#Snažím sa zistiť ako zvýšiť rýchlosť
