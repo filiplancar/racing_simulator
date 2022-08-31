@@ -44,7 +44,6 @@ class Car(pygame.sprite.Sprite):
 
 #Game loop
 def main():
-    
     #Positions for player car
     player_x = 360
     player_y = 410
@@ -65,6 +64,7 @@ def main():
     #Clock and running 
     clock = pygame.time.Clock()
     running = True
+
     
     while running:
         #Connect clock with fps
@@ -74,9 +74,12 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            
+        if obstacle_y == 650:
+            obstacle_x = random.randint(left_border, right_border)
+            obstacle_y = -250
 
         keys = pygame.key.get_pressed()
-        # side = random.choices(sides,weights)[0]
 
         #Moving with player car
         if keys[pygame.K_LEFT] and player_x != left_border:
