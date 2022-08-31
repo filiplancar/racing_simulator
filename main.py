@@ -1,6 +1,7 @@
 #Import modules and initialize pygame
 import pygame
 import os
+import random
 pygame.init()
 
 #Colors
@@ -44,50 +45,66 @@ class Car(pygame.sprite.Sprite):
 #Game loop
 def main():
     
-    pos_x = 360
-    pos_y = 410
-    second_pos_y = pos_y - 50
+    #Positions for player car
+    player_x = 360
+    player_y = 410
+    second_pos_y = player_y - 50
 
+    #Borders of road
     left_border = 140
     right_border = 585
+
+    #Positions for obstacle cars
+    obstacle_x = random.randint(left_border, right_border)
+    obstacle_y = -250
     
+    #Velocity and fps
     vel = 5
     fps = 60
 
+    #Clock and running 
     clock = pygame.time.Clock()
     running = True
     
     while running:
+        #Connect clock with fps
         clock.tick(fps)
 
+        #Ending the game
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-        
-        keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_LEFT] and pos_x != left_border:
-            pos_x -= vel
+        keys = pygame.key.get_pressed()
+        # side = random.choices(sides,weights)[0]
+
+        #Moving with player car
+        if keys[pygame.K_LEFT] and player_x != left_border:
+            player_x -= vel
         
-        if keys[pygame.K_RIGHT] and pos_x != right_border:
-            pos_x += vel
+        if keys[pygame.K_RIGHT] and player_x != right_border:
+            player_x += vel
         
-        if pos_y != second_pos_y:
-            pos_y -= vel
+        if player_y != second_pos_y:
+            player_y -= vel    
         
-        player_car = Car('assets', 'car0.png', (pos_x, pos_y))
+        obstacle_y += vel
+        
+        player_car = Car('assets', 'car0.png', (player_x, player_y))
         player_car.image = pygame.transform.scale(player_car.image, (120, 240))
 
-        cars = Car('assets', 'car1.png', (0, 0))
-        cars.image = pygame.transform.scale(cars.image, (120, 240))
+        obstacle_car = Car('assets', 'car1.png', (obstacle_x, obstacle_y))
+        obstacle_car.image = pygame.transform.scale(obstacle_car.image, (120, 240))
 
         screen.fill(WHITE)    
         screen.blit(bg.image, bg.rect)
         screen.blit(player_car.image, player_car.rect)
+
+        screen.blit(obstacle_car.image, obstacle_car.rect)
 
         pygame.display.update()
 
 if __name__ == "__main__":
     main()
 
-#Snažím sa dať auto do pohybu
+#Snažím sa spawnovať random autá, spravím to tak že vytvorím obstacle autá cez classu Car do ktorej dosadím pos_x a pos_y a zhora budem pomocou velocity posúvať dané auto dole
