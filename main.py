@@ -17,7 +17,6 @@ class Sizes:
 s = Sizes(20, 840, 650)
 
 #Images and font
-CAR_1 = pygame.image.load(os.path.join('assets', 'car1.png'))
 FONT = pygame.font.SysFont('Arial', s.font_size)
 
 #Get background
@@ -65,7 +64,6 @@ def main():
     clock = pygame.time.Clock()
     running = True
 
-    
     while running:
         #Connect clock with fps
         clock.tick(fps)
@@ -75,9 +73,11 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
             
-        if obstacle_y == 650:
+        #Positions for obstacle cars
+        if obstacle_y >= s.height:
             obstacle_x = random.randint(left_border, right_border)
             obstacle_y = -250
+            vel+=1
 
         keys = pygame.key.get_pressed()
 
@@ -91,14 +91,17 @@ def main():
         if player_y != second_pos_y:
             player_y -= vel    
         
+        #Moving with obstacle car
         obstacle_y += vel
         
+        #Cars objects
         player_car = Car('assets', 'car0.png', (player_x, player_y))
         player_car.image = pygame.transform.scale(player_car.image, (120, 240))
 
         obstacle_car = Car('assets', 'car1.png', (obstacle_x, obstacle_y))
         obstacle_car.image = pygame.transform.scale(obstacle_car.image, (120, 240))
 
+        #Fill and blit screen
         screen.fill(WHITE)    
         screen.blit(bg.image, bg.rect)
         screen.blit(player_car.image, player_car.rect)
@@ -110,4 +113,4 @@ def main():
 if __name__ == "__main__":
     main()
 
-#Snažím sa spawnovať random autá, spravím to tak že vytvorím obstacle autá cez classu Car do ktorej dosadím pos_x a pos_y a zhora budem pomocou velocity posúvať dané auto dole
+#Snažím sa zistiť ako zvýšiť rýchlosť
