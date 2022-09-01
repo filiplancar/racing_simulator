@@ -1,5 +1,5 @@
 #Import modules and initialize pygame
-# from tkinter import font
+# from cmath import rect
 import pygame
 import os
 import random
@@ -8,18 +8,22 @@ pygame.init()
 #Colors
 WHITE = (255,255,255)
 BLACK = (0,0,0)
+ORANGE = (255, 191, 0)
 
 #Sizes
 class Sizes:
-    def __init__(self, font_size, width, height):
-        self.font_size = font_size
+    def __init__(self, b_font_size, s_font_size, width, height):
+        self.b_font_size = b_font_size
+        self.s_font_size = s_font_size
         self.width = width
         self.height = height
 
-s = Sizes(20, 840, 650)
+s = Sizes(100, 20, 840, 650)
 
 #Images and font
-myfont = pygame.font.SysFont('Arial', s.font_size)
+smallfont = pygame.font.SysFont('Arial', s.s_font_size)
+bigfont = pygame.font.SysFont('Arial',s.b_font_size)
+
 
 #Get background
 class Background(pygame.sprite.Sprite):
@@ -38,10 +42,11 @@ pygame.display.set_caption('Racing Simulator')
 #Get car for player 
 class Car(pygame.sprite.Sprite):
     def __init__(self, path, img, location):
-        pygame.sprite.Sprite.__init__(self)
+        super().__init__()
         self.image = pygame.image.load(os.path.join(path, img))
         self.rect = self.image.get_rect()
         self.rect.left, self.rect.top = location
+        self.hitbox = (self.rect.left + 20, self.rect.top, 28, 60)
 
 #Game loop
 def main():
@@ -69,11 +74,11 @@ def main():
     clock = pygame.time.Clock()
     running = True
 
+    #Texts
+    crashtext = bigfont.render("CRASH", 1, (ORANGE))
+    anothergametext = smallfont.render("Another game? (Press any key)", 1, (ORANGE))
 
     while running:
-        #Connect clock with fps
-        clock.tick(fps)
-
         #Ending the game
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -119,12 +124,41 @@ def main():
 
         screen.blit(obstacle_car.image, obstacle_car.rect)
 
-        scoretext = myfont.render("Score = "+str(score), 1, (BLACK))
+        scoretext = smallfont.render("Score = "+str(score), 1, (BLACK))
         screen.blit(scoretext, (5,10))
 
-        velocitytext = myfont.render("Velocity = "+str(vel), 1, (BLACK))
+        velocitytext = smallfont.render("Velocity = "+str(vel), 1, (BLACK))
         screen.blit(velocitytext, (5,35))
 
+        #Colission
+        if player_car.rect.colliderect(obstacle_car):
+            screen.blit(crashtext, (260, 360))
+            screen.blit(anothergametext, (300, 460))
+            pygame.display.update()
+            
+            pause = True
+            while pause:
+                for event in pygame.event.get():
+                    
+                    if event.type == pygame.QUIT:
+                        pause = False
+                        running = False
+
+                    if event.type == pygame.KEYDOWN:
+                        score = 0
+                        vel = 5
+
+                        player_x = 360
+                        player_y = 410
+                        second_pos_y = player_y - 50
+
+                        obstacle_x = random.randint(left_border, right_border)
+                        obstacle_y = -250
+                            
+                        pause = False
+
+        #Connect clock with fps
+        clock.tick(fps)
         pygame.display.update()
 
 if __name__ == "__main__":
