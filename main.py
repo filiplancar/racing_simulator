@@ -1,5 +1,4 @@
 #Import modules and initialize pygame
-# from cmath import rect
 import pygame
 import os
 import random
@@ -44,9 +43,10 @@ class Car(pygame.sprite.Sprite):
     def __init__(self, path, img, location):
         super().__init__()
         self.image = pygame.image.load(os.path.join(path, img))
+        self.image = pygame.transform.scale(self.image, (120, 240))
         self.rect = self.image.get_rect()
         self.rect.left, self.rect.top = location
-        self.hitbox = (self.rect.left + 20, self.rect.top, 28, 60)
+        # self.hitbox = (self.rect.left + 20, self.rect.top, 28, 60)
 
 #Game loop
 def main():
@@ -112,10 +112,8 @@ def main():
         
         #Cars objects
         player_car = Car('assets', 'car0.png', (player_x, player_y))
-        player_car.image = pygame.transform.scale(player_car.image, (120, 240))
-
         obstacle_car = Car('assets', 'car1.png', (obstacle_x, obstacle_y))
-        obstacle_car.image = pygame.transform.scale(obstacle_car.image, (120, 240))
+        
 
         #Fill and blit screen
         screen.fill(WHITE)    
