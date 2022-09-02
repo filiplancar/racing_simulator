@@ -23,7 +23,6 @@ s = Sizes(100, 20, 840, 650)
 smallfont = pygame.font.SysFont('Arial', s.s_font_size)
 bigfont = pygame.font.SysFont('Arial',s.b_font_size)
 
-
 #Get background
 class Background(pygame.sprite.Sprite):
     def __init__(self, path, img, location):
@@ -46,7 +45,6 @@ class Car(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (120, 240))
         self.rect = self.image.get_rect()
         self.rect.left, self.rect.top = location
-        # self.hitbox = (self.rect.left + 20, self.rect.top, 28, 60)
 
 #Game loop
 def main():
@@ -114,7 +112,6 @@ def main():
         player_car = Car('assets', 'car0.png', (player_x, player_y))
         obstacle_car = Car('assets', 'car1.png', (obstacle_x, obstacle_y))
         
-
         #Fill and blit screen
         screen.fill(WHITE)    
         screen.blit(bg.image, bg.rect)
